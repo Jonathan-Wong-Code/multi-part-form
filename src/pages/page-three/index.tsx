@@ -1,19 +1,22 @@
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { FormPageContainer } from '../../containers/form-container';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState, Person } from '../../redux/store';
-import { useForm } from 'react-hook-form';
-import { setData } from '../../redux/actions/formData';
+import { setData } from '../../redux/actions/form-data';
+import { setFormStep } from '../../redux/actions/form-step';
+import { FormStepThree } from './form-component';
+import { useHistory } from 'react-router-dom';
 
-type FormData = {
-  favouriteFood: string;
-};
-
-export function FormStepThree() {
+export function FormStepThreeContainer() {
   const dispatch = useDispatch();
-  const formData = useSelector<ReduxState, Person>((s) => s.formState);
   const history = useHistory();
 
-  const { register, handleSubmit } = useForm<FormData>();
+  const formData = useSelector<ReduxState, Person>((s) => s.formState);
+  const currentStep = useSelector<ReduxState, number>((s) => s.currentStep);
+
+  React.useLayoutEffect(() => {
+    dispatch(setFormStep(3));
+  }, [dispatch]);
 
   const onSubmit = (data: Person) => {
     dispatch(setData(data));
@@ -25,19 +28,14 @@ export function FormStepThree() {
   };
 
   return (
-    <section>
-      <h2>Step Three</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='favouriteFood'>Favourite Food</label>
-        <input
-          {...register('favouriteFood', { required: true })}
-          id='favouriteFood'
-          defaultValue={formData.favouriteFood}
+    <>
+      <FormPageContainer currentStep={currentStep}>
+        <FormStepThree
+          formData={formData}
+          onSubmit={onSubmit}
+          onPrevClick={onPrevClick}
         />
-
-        <button>Next</button>
-      </form>
-      <button onClick={onPrevClick}>Previous</button>
-    </section>
+      </FormPageContainer>
+    </>
   );
 }

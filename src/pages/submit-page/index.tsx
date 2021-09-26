@@ -1,18 +1,25 @@
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { FormPageContainer } from '../../containers/form-container';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState, Person } from '../../redux/store';
-import { useForm } from 'react-hook-form';
-import { setData } from '../../redux/actions/formData';
-import { Link } from 'react-router-dom';
+import { setFormStep } from '../../redux/actions/form-step';
+import { FormSummary } from './form-summary';
 
-export function FormSummary() {
+export function FormSummaryContainer() {
+  const dispatch = useDispatch();
+
   const formData = useSelector<ReduxState, Person>((s) => s.formState);
+  const currentStep = useSelector<ReduxState, number>((s) => s.currentStep);
+
+  React.useLayoutEffect(() => {
+    dispatch(setFormStep(4));
+  }, [dispatch]);
 
   return (
-    <section>
-      <pre>{JSON.stringify(formData, null, 2)}</pre>
-      <button>Submit Final Data</button>
-      <Link to='/form-data-3'>Back</Link>
-    </section>
+    <>
+      <FormPageContainer currentStep={currentStep}>
+        <FormSummary formData={formData} />
+      </FormPageContainer>
+    </>
   );
 }

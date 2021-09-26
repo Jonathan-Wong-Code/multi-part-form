@@ -12,6 +12,7 @@ export type Person = {
 
 export interface ReduxState {
   formState: Person;
+  currentStep: number;
 }
 
 export function initStore() {

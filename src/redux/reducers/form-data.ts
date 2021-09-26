@@ -1,4 +1,4 @@
-import { FormActions } from '../actions/formData';
+import { FormActions } from '../actions/form-data';
 import { Person } from '../store';
 
 export const initialPerson = {

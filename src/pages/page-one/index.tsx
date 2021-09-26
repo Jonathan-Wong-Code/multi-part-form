@@ -1,20 +1,22 @@
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { FormPageContainer } from '../../containers/form-container';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState, Person } from '../../redux/store';
-import { useForm } from 'react-hook-form';
-import { setData } from '../../redux/actions/formData';
+import { setData } from '../../redux/actions/form-data';
+import { setFormStep } from '../../redux/actions/form-step';
+import { FormStepOne } from './form-component';
+import { useHistory } from 'react-router-dom';
 
-type FormData = {
-  firstName: string;
-  lastName: string;
-};
-
-export function FormStepOne() {
+export function FormStepOneContainer() {
   const dispatch = useDispatch();
-  const formData = useSelector<ReduxState, Person>((s) => s.formState);
   const history = useHistory();
 
-  const { register, handleSubmit } = useForm<FormData>();
+  const formData = useSelector<ReduxState, Person>((s) => s.formState);
+  const currentStep = useSelector<ReduxState, number>((s) => s.currentStep);
+
+  React.useLayoutEffect(() => {
+    dispatch(setFormStep(1));
+  }, [dispatch]);
 
   const onSubmit = (data: Person) => {
     dispatch(setData(data));
@@ -22,23 +24,10 @@ export function FormStepOne() {
   };
 
   return (
-    <section>
-      <h2>Step One</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='firstName'>First name</label>
-        <input
-          {...register('firstName')}
-          id='firstName'
-          defaultValue={formData.firstName}
-        />
-        <label htmlFor='lastName'>Last name</label>
-        <input
-          {...register('lastName')}
-          id='lastName'
-          defaultValue={formData.lastName}
-        />
-        <button>Next</button>
-      </form>
-    </section>
+    <>
+      <FormPageContainer currentStep={currentStep}>
+        <FormStepOne formData={formData} onSubmit={onSubmit} />
+      </FormPageContainer>
+    </>
   );
 }

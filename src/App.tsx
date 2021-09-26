@@ -2,10 +2,10 @@ import React from 'react';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import {
-  FormStepOne,
-  FormStepTwo,
-  FormStepThree,
-  FormSummary,
+  FormStepOneContainer,
+  FormStepTwoContainer,
+  FormStepThreeContainer,
+  FormSummaryContainer,
   HomePage,
 } from './pages';
 
@@ -16,10 +16,10 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path='/' exact component={HomePage} />
-          <Route path='/form-data-1' component={FormStepOne} />
-          <Route path='/form-data-2' component={FormStepTwo} />
-          <Route path='/form-data-3' component={FormStepThree} />
-          <Route path='/summary' component={FormSummary} />
+          <Route path='/form-data-1' component={FormStepOneContainer} />
+          <Route path='/form-data-2' component={FormStepTwoContainer} />
+          <Route path='/form-data-3' component={FormStepThreeContainer} />
+          <Route path='/summary' component={FormSummaryContainer} />
         </Switch>
       </BrowserRouter>
     </div>
